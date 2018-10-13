@@ -32,14 +32,34 @@ class InputChecker:
             self.errorMessageSetter(errorMessage)
             return False
         # If input is alphabetic only, return true
-        elif usrText.isalpha():
+
+        elif usrText.replace(" ", "").isalpha():#We have to remove spaces
             return True
         else:
             errorMessage = "Imput is not alphanumeric you prick!"
             self.errorMessageSetter(errorMessage)
             return False
+    def isShiftValid(self, alphabetShift):
+        # If input is empty, return false
+        if not alphabetShift:
+            errorMessage = "You didn't enter any shift! you prick!"
+            self.errorMessageSetter(errorMessage)
+            return False
+        # If input is numeric only, and if it is in correct range, return True
+        elif alphabetShift.isnumeric():
+            if int(alphabetShift) in range(1,27):#Range is from 1-26
+                return True
+            else:
+                errorMessage = "Shift must be number from 1-26! You prick!"
+                self.errorMessageSetter(errorMessage)
+                return False
+        else:
+            errorMessage = "Imput is not numeric you prick!"
+            self.errorMessageSetter(errorMessage)
+            return False
 
-    # Takes input text from user - if not correct, prompt user again, if correct, return text
+
+    #Takes input text from user - if not correct, prompt user again, if correct, return text
     def usrInputText(self):
         while (True):
             usrText = input("Enter text you want to cipher: ")
@@ -48,18 +68,21 @@ class InputChecker:
             else:
                 print(self.errorMessage)
 
-    def printText(self, usrText):
-        print("User entered this text: " + usrText)
-
-#Takes alphabet shift
-def usrAlphabetShift():
-    input("Enter shift: ")
-
+    # Takes alphabet shift
+    def usrAlphabetShift(self):
+        while(True):
+            alphabetShift = input("Enter alphabet shift: ")
+            if self.isShiftValid(alphabetShift):
+                return alphabetShift
+            else:
+                print(self.errorMessage)
 
 #Includes all function
 def Program():
-    inputChecker = InputChecker()
-    usrText = inputChecker.usrInputText()
-    inputChecker.printText(usrText)
+    inputChecker = InputChecker()#Initialization of class object
+    usrText = inputChecker.usrInputText()#Save user text to variable
+    shift = inputChecker.usrAlphabetShift()#Save alphabet shift to variable
+    print("This is user text: " + usrText)
+    print("This is user alphabet shift: " + shift)
 
 Program()
