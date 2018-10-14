@@ -87,13 +87,24 @@ def doTheMagic(usrText, shift):
         if letter ==  " ":
             cipheredLetter = " "
         else:
+            #Default alphabet start and end, will change according if the letter is large or small
+            alphabetStart = 0
+            alphabetEnd = 0
+
+            if ord(letter) in range(97,123):#97-122 - a-z
+                alphabetStart = 97
+                alphabetEnd = 122
+            else:#Letters are big so A-Z
+                alphabetStart = 65
+                alphabetEnd = 90
+
             #Alphabet of small letters in ASCII is from 97 to 122
             #So if our ciphered can be more than 122 and less than 97
             #If it is, we must first count how distant is letter from end of alphabet, substract distance from shift and cipher letter by shift from the beginning of alphabet
-            if (ord(letter) + int(shift)) > 122:
-                difference = 122 - (ord(letter))
+            if (ord(letter) + int(shift)) > alphabetEnd:
+                difference = alphabetEnd - (ord(letter))
                 functionShift = int(shift) - difference#I had to assign shift to different variable otherwise it would lead to program fail
-                cipheredLetter = chr(97 + (functionShift-1))#There must be -1 because in case 'overflow' letter would be shifted to one more character further
+                cipheredLetter = chr(alphabetStart + (functionShift-1))#There must be -1 because in case 'overflow' letter would be shifted to one more character further
             else:
                 # Convert actual letter to ASCII code, add shift and convert it back to letter
                 cipheredLetter = chr(ord(letter) + int(shift))
