@@ -77,12 +77,39 @@ class InputChecker:
             else:
                 print(self.errorMessage)
 
+#Function that cipher text and return ciphered text
+def doTheMagic(usrText, shift):
+    cipheredText = ""
+
+    for letter in usrText:
+        # If there is space in text, we leave space also in ciphered text
+        cipheredLetter = ""
+        if letter ==  " ":
+            cipheredLetter = " "
+        else:
+            #Alphabet of small letters in ASCII is from 97 to 122
+            #So if our ciphered can be more than 122 and less than 97
+            #If it is, we must first count how distant is letter from end of alphabet, substract distance from shift and cipher letter by shift from the beginning of alphabet
+            if (ord(letter) + int(shift)) > 122:
+                difference = 122 - (ord(letter))
+                functionShift = int(shift) - difference#I had to assign shift to different variable otherwise it would lead to program fail
+                cipheredLetter = chr(97 + (functionShift-1))#There must be -1 because in case 'overflow' letter would be shifted to one more character further
+            else:
+                # Convert actual letter to ASCII code, add shift and convert it back to letter
+                cipheredLetter = chr(ord(letter) + int(shift))
+
+        cipheredText += cipheredLetter
+
+    return cipheredText
+
 #Includes all function
 def Program():
     inputChecker = InputChecker()#Initialization of class object
     usrText = inputChecker.usrInputText()#Save user text to variable
     shift = inputChecker.usrAlphabetShift()#Save alphabet shift to variable
-    print("This is user text: " + usrText)
+    print("This is original text: " + usrText)
     print("This is user alphabet shift: " + shift)
+    cipheredText = doTheMagic(usrText, shift)
+    print("This is ciphered text: " + cipheredText)
 
 Program()
